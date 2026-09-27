@@ -5,6 +5,7 @@ with clear error messages instead of raw tracebacks.
 """
 
 import ipaddress
+import socket
 
 
 class ValidationError(Exception):
@@ -14,14 +15,22 @@ class ValidationError(Exception):
 
 def validate_ip(value: str) -> str:
     """
-    Validate that a string is a well-formed IPv4/IPv6 address.
-    Returns the value unchanged if valid, raises ValidationError otherwise.
+    Validate that a string is a well-formed IP address, or a resolvable
+    hostname. Returns an IP address string in either case.
     """
     try:
         ipaddress.ip_address(value)
         return value
     except ValueError:
-        raise ValidationError(f"'{value}' is not a valid IP address.")
+        pass
+
+    try:
+        resolved = socket.gethostbyname(value)
+        return resolved
+    except socket.gaierror:
+        raise ValidationError(
+            f"'{value}' is not a valid IP address or resolvable hostname."
+        )
 
 
 def validate_subnet(value: str) -> str:
