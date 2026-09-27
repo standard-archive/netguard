@@ -89,10 +89,6 @@ python -m netguard.cli sniff -c 20
 
 ![HTML Report Example](screenshots/html_report_example.png)
 
-## Known Limitations
-
-- `scan` and `banner` currently require a literal IP address, not a hostname (e.g. use `93.184.215.14` instead of `example.com`). Resolving hostnames automatically is planned for a future release.
-
 ## ⚠️ Legal Notice
 Only use NetGuard against hosts and networks you own or have explicit
 permission to test. Unauthorized scanning of devices you don't control
