@@ -65,3 +65,14 @@ def test_validate_port_range_invalid():
         validate_port_range("1000-1")
     with pytest.raises(ValidationError):
         validate_port_range("99999")
+
+
+def test_validate_ip_resolves_hostname():
+    # localhost should always resolve, regardless of network state
+    result = validate_ip("localhost")
+    assert result in ("127.0.0.1", "::1")
+
+
+def test_validate_ip_rejects_unresolvable_hostname():
+    with pytest.raises(ValidationError):
+        validate_ip("this-domain-does-not-exist-12345.invalid")
