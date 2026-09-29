@@ -1,5 +1,6 @@
 # NetGuard 🛡️
 
+![Tests](https://github.com/standard-archive/netguard/actions/workflows/tests.yml/badge.svg)
 ![Status](https://img.shields.io/badge/status-v1.0.0%20released-brightgreen)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
