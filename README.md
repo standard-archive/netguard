@@ -95,6 +95,13 @@ Only use NetGuard against hosts and networks you own or have explicit
 permission to test. Unauthorized scanning of devices you don't control
 may be illegal in your jurisdiction.
 
+## Documentation
+
+- [Requirements Specification](docs/requirements.md)
+- [Design Document](docs/design.md)
+- [SDLC Process Overview](docs/sdlc.md)
+- [Project Wiki](https://github.com/standard-archive/netguard/wiki)
+
 ## Project Structure
 ```
 netguard/
