@@ -3,6 +3,7 @@ NetGuard - Report Generator Module
 Exports scan/discovery/banner/arp results to JSON or HTML files.
 """
 
+import html
 import json
 from datetime import datetime
 
@@ -30,12 +31,12 @@ def generate_html_report(data: dict, filepath: str):
     rows = ""
     for key, value in data.items():
         if isinstance(value, list):
-            value_html = "<br>".join(str(v) for v in value) if value else "(none)"
+            value_html = "<br>".join(html.escape(str(v)) for v in value) if value else "(none)"
         else:
-            value_html = str(value)
-        rows += f"<tr><td>{key}</td><td>{value_html}</td></tr>\n"
+            value_html = html.escape(str(value))
+        rows += f"<tr><td>{html.escape(str(key))}</td><td>{value_html}</td></tr>\n"
 
-    html = f"""<!DOCTYPE html>
+    page = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -61,7 +62,7 @@ def generate_html_report(data: dict, filepath: str):
 </html>
 """
     with open(filepath, "w", encoding="utf-8") as f:
-        f.write(html)
+        f.write(page)
     print(f"[*] HTML report saved to {filepath}")
 
 
