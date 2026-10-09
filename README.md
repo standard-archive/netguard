@@ -121,3 +121,10 @@ netguard/
 
 ## License
 MIT
+
+## Usage
+```bash
+python3 -m netguard --help
+python3 -m netguard scan 127.0.0.1 -p 22,80,443
+python3 -m netguard discover 192.168.1.0/24
+```
