@@ -31,7 +31,7 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 
 Install as a package (recommended, gives you a `netguard` command):
 ```bash
-git clone https://github.com/lichumestandard-sudo/netguard.git
+git clone https://github.com/standard-archive/netguard.git
 cd netguard
 pip install -e .
 netguard --help
@@ -39,7 +39,7 @@ netguard --help
 
 Or run without installing:
 ```bash
-git clone https://github.com/YOUR_USERNAME/netguard.git
+git clone https://github.com/standard-archive/netguard.git
 cd netguard
 python -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
