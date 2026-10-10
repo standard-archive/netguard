@@ -19,8 +19,8 @@ See [CHANGELOG.md](CHANGELOG.md) for full release history.
 - [x] Banner grabbing (service fingerprinting)
 - [x] ARP scanner (local network device discovery with MAC addresses)
 - [x] Packet sniffer (live capture with protocol summaries)
-- [ ] HTML/JSON report generation
-- [ ] Unit tests
+- [x] HTML/JSON report generation (`--output` / `--format`)
+- [x] Unit tests (pytest, run on every push via GitHub Actions)
 
 ## Requirements
 - Python 3.10+
