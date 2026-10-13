@@ -102,22 +102,5 @@ may be illegal in your jurisdiction.
 - [SDLC Process Overview](docs/sdlc.md)
 - [Project Wiki](https://github.com/standard-archive/netguard/wiki)
 
-## Project Structure
-```
-netguard/
-├── netguard/
-│   ├── __init__.py
-│   ├── cli.py          # CLI entry point (argparse)
-│   ├── discovery.py    # Host discovery (ping sweep)
-│   ├── scanner.py      # TCP port scanner
-│   ├── banner.py       # Banner grabbing
-│   ├── arp_scan.py     # ARP scanner
-│   └── sniffer.py      # Packet sniffer
-├── CHANGELOG.md
-├── README.md
-├── requirements.txt
-└── .editorconfig
-```
-
 ## License
 MIT
