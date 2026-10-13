@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+### Changed
+- scan, discover and banner now honor max_workers and timeout settings from netguard.cfg (previously only default_ports and default_count were read)
+
+### Added
+- Unit tests for config loading and host discovery
+
 ## [1.0.0] - 2026-09-21
 ### Added
 - CLI entry point with argparse and subcommands (discover, scan, banner, arp, sniff)
