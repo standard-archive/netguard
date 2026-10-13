@@ -61,7 +61,7 @@ def scan_port(target: str, port: int, timeout: float = 0.5) -> bool:
         return False
 
 
-def scan_ports(target: str, port_range: str, max_workers: int = 100) -> list:
+def scan_ports(target: str, port_range: str, max_workers: int = 100, timeout: float = 0.5) -> list:
     """
     Scan a range of ports on a target host. Returns a list of open ports.
     """
@@ -72,7 +72,7 @@ def scan_ports(target: str, port_range: str, max_workers: int = 100) -> list:
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_port = {
-            executor.submit(scan_port, target, port): port for port in ports
+            executor.submit(scan_port, target, port, timeout): port for port in ports
         }
         for future in as_completed(future_to_port):
             port = future_to_port[future]
