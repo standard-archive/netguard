@@ -36,7 +36,7 @@ def ping_host(ip: str, timeout_ms: int = 1000) -> bool:
         return False
 
 
-def discover_hosts(subnet: str, max_workers: int = 50) -> list:
+def discover_hosts(subnet: str, max_workers: int = 50, timeout_ms: int = 1000) -> list:
     """
     Sweep a subnet (e.g. '192.168.1.0/24') and return a list of live IPs.
     """
@@ -52,7 +52,7 @@ def discover_hosts(subnet: str, max_workers: int = 50) -> list:
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_ip = {
-            executor.submit(ping_host, str(ip)): str(ip) for ip in hosts
+            executor.submit(ping_host, str(ip), timeout_ms): str(ip) for ip in hosts
         }
         for future in as_completed(future_to_ip):
             ip = future_to_ip[future]
