@@ -93,7 +93,7 @@ def main():
     try:
         if args.command == "discover":
             validate_subnet(args.target)
-            live_hosts = discover_hosts(args.target)
+            live_hosts = discover_hosts(args.target, max_workers=config.getint("discover", "max_workers"), timeout_ms=config.getint("discover", "timeout_ms"))
             logger.info(f"Discovery finished: {len(live_hosts)} host(s) up on {args.target}")
             print(f"\n[*] Discovery complete. {len(live_hosts)} host(s) up.")
             if args.output:
@@ -102,7 +102,7 @@ def main():
         elif args.command == "scan":
             validate_ip(args.target)
             validate_port_range(args.ports)
-            open_ports = scan_ports(args.target, args.ports)
+            open_ports = scan_ports(args.target, args.ports, max_workers=config.getint("scan", "max_workers"), timeout=config.getfloat("scan", "timeout"))
             logger.info(f"Scan finished: {len(open_ports)} open port(s) on {args.target}")
             print(f"\n[*] Scan complete. {len(open_ports)} open port(s) found.")
             if args.output:
@@ -111,7 +111,7 @@ def main():
         elif args.command == "banner":
             validate_ip(args.target)
             validate_port(args.port)
-            result = grab_banner(args.target, args.port)
+            result = grab_banner(args.target, args.port, timeout=config.getfloat("banner", "timeout"))
             logger.info(f"Banner grabbed from {args.target}:{args.port}")
             print(f"[{args.target}:{args.port}] {result}")
             if args.output:
