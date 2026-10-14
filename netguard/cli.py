@@ -13,7 +13,12 @@ from netguard.arp_scan import arp_scan
 from netguard.sniffer import start_sniffer
 from netguard.report import generate_report
 from netguard.logger import setup_logger
-from netguard.config import load_config, generate_default_config_file
+from netguard.config import (
+    ConfigError,
+    generate_default_config_file,
+    load_config,
+    validate_config,
+)
 from netguard.validators import (
     ValidationError,
     validate_ip,
@@ -23,7 +28,16 @@ from netguard.validators import (
 )
 
 logger = setup_logger()
-config = load_config()
+try:
+    config = validate_config(load_config())
+except ConfigError as e:
+    if "--init-config" in sys.argv[1:]:
+        generate_default_config_file()  # lets users repair a broken config
+        sys.exit(0)
+    logger.error(f"Invalid config: {e}")
+    print(f"[!] Invalid config: {e}")
+    print("    Fix netguard.cfg, or run netguard --init-config to regenerate it.")
+    sys.exit(1)
 
 
 def add_output_args(subparser):
