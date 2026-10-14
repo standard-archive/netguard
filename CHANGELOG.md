@@ -8,6 +8,9 @@ All notable changes to this project are documented here.
 
 ### Added
 - Unit tests for config loading and host discovery
+- Startup validation of netguard.cfg: clear errors for non-numeric, zero/negative or non-finite values, invalid port ranges and malformed files
+- netguard --init-config now works even when the existing config is broken
+- Configuration section in the README
 
 ## [1.0.0] - 2026-09-21
 ### Added
