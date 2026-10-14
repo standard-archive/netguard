@@ -86,6 +86,29 @@ python -m netguard.cli sniff -c 20
 ```
 > Requires Administrator/root privileges and Npcap (Windows).
 
+## Configuration
+
+NetGuard reads optional defaults from `netguard.cfg` in the directory you run it from.
+Generate a starting file with (this overwrites an existing `netguard.cfg`):
+
+```bash
+netguard --init-config
+```
+
+| Section | Key | Default | Meaning |
+|---------|-----|---------|---------|
+| scan | default_ports | 1-1024 | Ports to scan when `-p` is omitted |
+| scan | max_workers | 100 | Concurrent connection threads |
+| scan | timeout | 0.5 | Seconds to wait per port |
+| discover | max_workers | 50 | Concurrent pings |
+| discover | timeout_ms | 1000 | Milliseconds to wait per ping |
+| banner | timeout | 2.0 | Seconds to wait for a banner |
+| sniff | default_count | 20 | Packets to capture when `-c` is omitted |
+
+Missing keys fall back to these defaults. Invalid values (for example
+`timeout = abc` or `max_workers = 0`) stop NetGuard with a clear error
+message instead of a traceback.
+
 ## Example Report Output
 
 ![HTML Report Example](screenshots/html_report_example.png)
