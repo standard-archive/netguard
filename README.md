@@ -66,6 +66,12 @@ python -m netguard.cli scan 192.168.0.1 -p 1-1024
 python -m netguard.cli scan 192.168.0.1 -p 80,443,8080
 ```
 
+Scan the N most common ports instead of a range:
+```bash
+python -m netguard.cli scan 192.168.0.1 --top-ports 20
+```
+`--top-ports` accepts 1-100 and cannot be combined with `-p`.
+
 ### Banner Grabbing
 Grab the service banner from an open port:
 ```bash

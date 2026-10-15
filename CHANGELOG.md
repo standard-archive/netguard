@@ -11,6 +11,9 @@ All notable changes to this project are documented here.
 - Startup validation of netguard.cfg: clear errors for non-numeric, zero/negative or non-finite values, invalid port ranges and malformed files
 - netguard --init-config now works even when the existing config is broken
 - Configuration section in the README
+- scan --top-ports N: scan the N most common ports (1-100), mutually exclusive with -p
+- Service names for 19 more common ports (VNC, Redis, MongoDB, LDAP and others)
+- Unit and end-to-end tests for --top-ports
 
 ## [1.0.0] - 2026-09-21
 ### Added
