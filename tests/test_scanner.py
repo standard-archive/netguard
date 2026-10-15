@@ -50,3 +50,12 @@ def test_scan_ports_passes_timeout_to_each_port(monkeypatch):
     monkeypatch.setattr(scanner, "scan_port", fake_scan_port)
     scanner.scan_ports("127.0.0.1", "80-82", max_workers=2, timeout=0.1)
     assert seen == [0.1, 0.1, 0.1]
+
+
+def test_top_ports_are_unique_valid_and_ordered():
+    from netguard.scanner import TOP_PORTS
+
+    assert len(TOP_PORTS) == 100
+    assert len(set(TOP_PORTS)) == len(TOP_PORTS)
+    assert all(1 <= p <= 65535 for p in TOP_PORTS)
+    assert TOP_PORTS[:3] == [80, 443, 22]

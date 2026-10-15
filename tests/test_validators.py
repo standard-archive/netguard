@@ -9,6 +9,7 @@ from netguard.validators import (
     validate_subnet,
     validate_port,
     validate_port_range,
+    validate_top_ports,
 )
 
 
@@ -76,3 +77,14 @@ def test_validate_ip_resolves_hostname():
 def test_validate_ip_rejects_unresolvable_hostname():
     with pytest.raises(ValidationError):
         validate_ip("this-domain-does-not-exist-12345.invalid")
+
+
+def test_validate_top_ports_accepts_valid_counts():
+    assert validate_top_ports(1, 100) == 1
+    assert validate_top_ports(100, 100) == 100
+
+
+@pytest.mark.parametrize("bad", [0, -3, 101])
+def test_validate_top_ports_rejects_out_of_range(bad):
+    with pytest.raises(ValidationError):
+        validate_top_ports(bad, 100)
