@@ -76,3 +76,15 @@ def validate_port_range(value: str) -> str:
                 raise ValidationError(f"Invalid port value: '{part}'")
             validate_port(int(part))
     return value
+
+
+def validate_top_ports(value: int, maximum: int) -> int:
+    """
+    Validate the N in --top-ports N: at least 1 and no more than the size
+    of the built-in top ports list.
+    """
+    if not (1 <= value <= maximum):
+        raise ValidationError(
+            f"--top-ports must be between 1 and {maximum}, got {value}."
+        )
+    return value
