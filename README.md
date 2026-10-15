@@ -115,6 +115,24 @@ Missing keys fall back to these defaults. Invalid values (for example
 `timeout = abc` or `max_workers = 0`) stop NetGuard with a clear error
 message instead of a traceback.
 
+## Saving Reports
+
+`discover`, `scan`, `banner` and `arp` can save their results with `-o/--output` and `-f/--format`:
+
+| Format | Flag | Notes |
+|--------|------|-------|
+| JSON (default) | `-f json` | Includes a timestamp |
+| HTML | `-f html` | Styled page, values are escaped |
+| CSV | `-f csv` | One row per result, opens in Excel |
+| Markdown | `-f md` | Table to paste into a README or write-up |
+
+```bash
+python -m netguard.cli scan 192.168.0.1 --top-ports 50 -o results.csv -f csv
+```
+
+CSV values that start with `=`, `+`, `-` or `@` get a leading `'` so a hostile
+service banner cannot run as a spreadsheet formula when you open the file.
+
 ## Example Report Output
 
 ![HTML Report Example](screenshots/html_report_example.png)

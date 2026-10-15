@@ -14,6 +14,9 @@ All notable changes to this project are documented here.
 - scan --top-ports N: scan the N most common ports (1-100), mutually exclusive with -p
 - Service names for 19 more common ports (VNC, Redis, MongoDB, LDAP and others)
 - Unit and end-to-end tests for --top-ports
+- CSV and Markdown report formats (--format csv or md)
+- CSV reports guard against spreadsheet formula injection from untrusted banners
+- Unit and end-to-end tests for the new report formats
 
 ## [1.0.0] - 2026-09-21
 ### Added
