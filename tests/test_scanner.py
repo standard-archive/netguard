@@ -59,3 +59,9 @@ def test_top_ports_are_unique_valid_and_ordered():
     assert len(set(TOP_PORTS)) == len(TOP_PORTS)
     assert all(1 <= p <= 65535 for p in TOP_PORTS)
     assert TOP_PORTS[:3] == [80, 443, 22]
+
+
+def test_top_20_ports_all_have_service_names():
+    from netguard.scanner import COMMON_PORTS, TOP_PORTS
+
+    assert all(port in COMMON_PORTS for port in TOP_PORTS[:20])
