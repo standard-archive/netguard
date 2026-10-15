@@ -3,6 +3,7 @@ NetGuard - Report Generator Module
 Exports scan/discovery/banner/arp results to JSON or HTML files.
 """
 
+import csv
 import html
 import json
 from datetime import datetime
@@ -64,6 +65,57 @@ def generate_html_report(data: dict, filepath: str):
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(page)
     print(f"[*] HTML report saved to {filepath}")
+
+
+def _csv_safe(value):
+    """
+    Neutralize spreadsheet formulas in untrusted text (CSV injection).
+    Banners come from remote hosts, so a value like =HYPERLINK(...) must
+    not be executed when the file is opened in Excel.
+    """
+    if isinstance(value, str) and value[:1] in ("=", "+", "-", "@", "\t", "\r"):
+        return "'" + value
+    return value
+
+
+def _flatten(data: dict):
+    """
+    Turn a results dict into (headers, rows) for tabular output.
+    Plain fields repeat on every row. The first list field expands into one
+    row per item (dict items add one column per key). Any further list
+    fields are joined into a single cell.
+    """
+    list_key = next((k for k, v in data.items() if isinstance(v, list)), None)
+    scalars = {
+        k: (", ".join(str(x) for x in v) if isinstance(v, list) else v)
+        for k, v in data.items()
+        if k != list_key
+    }
+    if list_key is None:
+        return list(scalars), [list(scalars.values())]
+
+    items = data[list_key]
+    if items and all(isinstance(i, dict) for i in items):
+        columns = list(items[0].keys())
+        rows = [list(scalars.values()) + [i.get(c, "") for c in columns] for i in items]
+        return list(scalars) + columns, rows
+
+    rows = [list(scalars.values()) + [i] for i in items]
+    return list(scalars) + [list_key], rows
+
+
+def generate_csv_report(data: dict, filepath: str):
+    """
+    Write a results dict to a CSV file (one row per result). Saved as
+    UTF-8 with a BOM so Excel on Windows opens it correctly.
+    """
+    headers, rows = _flatten(data)
+    with open(filepath, "w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.writer(f)
+        writer.writerow(headers)
+        for row in rows:
+            writer.writerow([_csv_safe(v) for v in row])
+    print(f"[*] CSV report saved to {filepath}")
 
 
 def generate_report(data: dict, filepath: str, fmt: str = "json"):
