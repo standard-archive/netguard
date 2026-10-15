@@ -118,6 +118,41 @@ def generate_csv_report(data: dict, filepath: str):
     print(f"[*] CSV report saved to {filepath}")
 
 
+def _md_cell(value) -> str:
+    """Make a value safe to place inside a Markdown table cell."""
+    if isinstance(value, dict):
+        value = ", ".join(f"{k}: {v}" for k, v in value.items())
+    text = html.escape(str(value), quote=False)
+    text = text.replace("\\", "\\\\").replace("|", "\\|")
+    return text.replace("\r\n", "<br>").replace("\n", "<br>").replace("\r", "<br>")
+
+
+def generate_markdown_report(data: dict, filepath: str):
+    """
+    Write a results dict to a Markdown file with a Field/Value table,
+    ready to paste into a README, issue, or write-up.
+    """
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    lines = [
+        "# NetGuard Report",
+        "",
+        f"Generated: {timestamp}",
+        "",
+        "| Field | Value |",
+        "|-------|-------|",
+    ]
+    for key, value in data.items():
+        if isinstance(value, list):
+            cell = "<br>".join(_md_cell(v) for v in value) if value else "(none)"
+        else:
+            cell = _md_cell(value)
+        lines.append(f"| {_md_cell(key)} | {cell} |")
+
+    with open(filepath, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+    print(f"[*] Markdown report saved to {filepath}")
+
+
 def generate_report(data: dict, filepath: str, fmt: str = "json"):
     """
     Dispatch to the correct report generator based on format.
