@@ -7,7 +7,7 @@ import argparse
 import sys
 
 from netguard.discovery import discover_hosts
-from netguard.scanner import scan_ports
+from netguard.scanner import scan_ports, TOP_PORTS
 from netguard.banner import grab_banner
 from netguard.arp_scan import arp_scan
 from netguard.sniffer import start_sniffer
@@ -25,6 +25,7 @@ from netguard.validators import (
     validate_subnet,
     validate_port,
     validate_port_range,
+    validate_top_ports,
 )
 
 logger = setup_logger()
@@ -70,7 +71,9 @@ def build_parser():
     default_ports = config.get("scan", "default_ports", fallback="1-1024")
     scan_parser = subparsers.add_parser("scan", help="Scan ports on a target host")
     scan_parser.add_argument("target", help="Target IP address")
-    scan_parser.add_argument("-p", "--ports", default=default_ports, help=f"Port range (default from config: {default_ports})")
+    scan_group = scan_parser.add_mutually_exclusive_group()
+    scan_group.add_argument("-p", "--ports", default=default_ports, help=f"Port range (default from config: {default_ports})")
+    scan_group.add_argument("--top-ports", type=int, metavar="N", help=f"Scan the N most common ports (1-{len(TOP_PORTS)}) instead of -p")
     add_output_args(scan_parser)
 
     banner_parser = subparsers.add_parser("banner", help="Grab service banners from open ports")
@@ -115,8 +118,12 @@ def main():
 
         elif args.command == "scan":
             validate_ip(args.target)
-            validate_port_range(args.ports)
-            open_ports = scan_ports(args.target, args.ports, max_workers=config.getint("scan", "max_workers"), timeout=config.getfloat("scan", "timeout"))
+            if args.top_ports is not None:
+                validate_top_ports(args.top_ports, len(TOP_PORTS))
+                port_spec = ",".join(str(p) for p in TOP_PORTS[:args.top_ports])
+            else:
+                port_spec = validate_port_range(args.ports)
+            open_ports = scan_ports(args.target, port_spec, max_workers=config.getint("scan", "max_workers"), timeout=config.getfloat("scan", "timeout"))
             logger.info(f"Scan finished: {len(open_ports)} open port(s) on {args.target}")
             print(f"\n[*] Scan complete. {len(open_ports)} open port(s) found.")
             if args.output:
