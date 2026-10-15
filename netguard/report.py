@@ -159,7 +159,11 @@ def generate_report(data: dict, filepath: str, fmt: str = "json"):
     """
     if fmt == "json":
         generate_json_report(data, filepath)
+    elif fmt == "csv":
+        generate_csv_report(data, filepath)
+    elif fmt == "md":
+        generate_markdown_report(data, filepath)
     elif fmt == "html":
         generate_html_report(data, filepath)
     else:
-        raise ValueError(f"Unsupported report format: '{fmt}'. Use 'json' or 'html'.")
+        raise ValueError(f"Unsupported report format: '{fmt}'. Use json, html, csv or md.")

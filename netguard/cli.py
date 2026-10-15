@@ -45,7 +45,7 @@ def add_output_args(subparser):
     """Add shared --output/--format flags to a subcommand parser."""
     subparser.add_argument("-o", "--output", help="Save results to a file")
     subparser.add_argument(
-        "-f", "--format", choices=["json", "html"], default="json",
+        "-f", "--format", choices=["json", "html", "csv", "md"], default="json",
         help="Report format when using --output (default: json)"
     )
 
