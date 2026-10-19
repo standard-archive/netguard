@@ -17,6 +17,11 @@ All notable changes to this project are documented here.
 - CSV and Markdown report formats (--format csv or md)
 - CSV reports guard against spreadsheet formula injection from untrusted banners
 - Unit and end-to-end tests for the new report formats
+- GitHub Actions workflow that runs the test suite on every push, with a status badge in the README
+
+### Fixed
+- scan and banner accept hostnames again: validate_ip now resolves them to IP addresses
+- HTML reports now escape special characters in scan data; previously unescaped banner text could break or inject into the page
 
 ## [1.0.0] - 2026-09-21
 ### Added
